@@ -1,20 +1,24 @@
 import os
 import tempfile
+from typing import Sized
+
 from PIL import Image
 import pydot
 #import networkx as nx
 import retworkx as rx
-import igraph as ig
+import plot_igraph as ig
 import numpy as np
 
-G = rx.undirected_gnm_random_graph(1000, 2000,None)
+G:rx.PyDiGraph = rx.directed_gnm_random_graph(1000, 2000,None)
 
-components = rx.strongly_connected_components(G)
+components:list = rx.strongly_connected_components(G)
 
-largest_component = max(components, key=len)
-H = G.subgraph(largest_component)
+largest_component:Sized = max(components, key=len)
 
+H:rx.PyGraph = G.subgraph(largest_component)
 
+#have to fix pydot error
+"""
 dot = pydot.graph_from_dot_data(G.to_dot())[0]
 with tempfile.TemporaryDirectory() as tmpdirname:
     tmp_path = os.path.join(tmpdirname, 'dag.png')
@@ -22,8 +26,7 @@ with tempfile.TemporaryDirectory() as tmpdirname:
     image = Image.open(tmp_path)
     os.remove(tmp_path)
 image
-
-n1 = rx.graph_adjacency_matrix(G, None)
-
+"""
+n1:np.ndarray = rx.digraph_adjacency_matrix(G, None)
 g = ig.Graph.Weighted_Adjacency(n1.tolist())
 ig.plot(g)

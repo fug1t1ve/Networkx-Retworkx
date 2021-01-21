@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import networkx as nx
-import igraph as ig
+import plot_igraph as ig
 
 
 G = nx.dense_gnm_random_graph(1000, 2000)
