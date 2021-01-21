@@ -17,12 +17,15 @@ G=rx.generators.grid_graph(5,5,None)
 
 dot = pydot.graph_from_dot_data(G.to_dot())[0]
 
+#plotting retworkx not working finding an alternative method
+"""
 with tempfile.TemporaryDirectory() as tmpdirname:
     tmp_path = os.path.join(tmpdirname, 'dag.png')
     dot.write_png(tmp_path)
     image = Image.open(tmp_path)
     os.remove(tmp_path)
 image
+"""
 
 
 M=rx.graph_adjacency_matrix(G,None)
@@ -35,6 +38,7 @@ a=G.edge_list()
 H=rx.PyGraph()
 H.read_edge_list(a)
 
+"""
 dot = pydot.graph_from_dot_data(H.to_dot())[0]
 
 with tempfile.TemporaryDirectory() as tmpdirname:
@@ -43,4 +47,5 @@ with tempfile.TemporaryDirectory() as tmpdirname:
     image = Image.open(tmp_path)
     os.remove(tmp_path)
 image
+"""
 
