@@ -44,11 +44,11 @@ with tempfile.NamedTemporaryFile('wt') as fd:
     H: rx.PyGraph = rx.PyGraph()
     H.read_edge_list(path)
 
-"""
-dot = pydot.graph_from_dot_data(H.to_dot())[0]
 
-with tempfile.TemporaryDirectory() as tmpdirname:
-    tmp_path = os.path.join(tmpdirname, 'dag.png')
+dot = pydot.graph_from_dot_data(H.to_dot())[0]
+"""
+with tempfile.NamedTemporaryFile('wt') as fd:
+    tmp_path = fd.name
     dot.write_png(tmp_path)
     image = Image.open(tmp_path)
     os.remove(tmp_path)
