@@ -1,11 +1,10 @@
 import math
-from typing import Callable
+from typing import *
 
 import matplotlib.pyplot as plt
-import retworkx as rx
 import networkx as nx
 import numpy
-from typing import *
+import retworkx as rx
 
 
 def progressive_widening_search(a: nx.classes.graph.Graph, s: int, v, con: Callable[[int], bool], initial_width: int = 1) -> int:
