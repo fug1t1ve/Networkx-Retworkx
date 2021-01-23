@@ -1,5 +1,3 @@
-from typing import Any
-
 from numpy import *
 import retworkx as rx
 from collections import defaultdict
@@ -37,13 +35,14 @@ image
 M: ndarray = rx.graph_adjacency_matrix(G, None)
 AdjList: defaultdict = convert(M)
 
-s: str = ""
 a: EdgeList = G.edge_list()
-for i in a:
-    s += str(i) + ' '
-
-H: rx.PyGraph = rx.PyGraph()
-H.read_edge_list(s)
+with tempfile.NamedTemporaryFile('wt') as fd:
+    path: str = fd.name
+    for i in a:
+        fd.write(str(i[0]) + ' ' + str(i[1]) + '\n')
+    fd.flush()
+    H: rx.PyGraph = rx.PyGraph()
+    H.read_edge_list(path)
 
 """
 dot = pydot.graph_from_dot_data(H.to_dot())[0]
