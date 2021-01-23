@@ -1,23 +1,30 @@
+from typing import Any
+
+from numpy import *
 import retworkx as rx
 from collections import defaultdict
 import pydot
 import tempfile
 import os
 from PIL import Image
+from pydot import Dot
+from retworkx.retworkx import EdgeList
 
-def convert(a):
-    adjList = defaultdict(list)
-    for i in range(len(a)):
-        for j in range(len(a[i])):
-            if a[i][j] == 1:
-                adjList[i].append(j)
-    return adjList
 
-G=rx.generators.grid_graph(5,5,None)
+def convert(m: ndarray) -> defaultdict:
+    adj: defaultdict = defaultdict(list)
+    for k in range(len(m)):
+        for j in range(len(m[k])):
+            if m[k][j] == 1:
+                adj[k].append(j)
+    return adj
 
-dot = pydot.graph_from_dot_data(G.to_dot())[0]
 
-#plotting retworkx not working finding an alternative method
+G: rx.PyGraph = rx.generators.grid_graph(5, 5, None)
+
+dot: Dot = pydot.graph_from_dot_data(G.to_dot())[0]
+
+# plotting retworkx not working finding an alternative method
 """
 with tempfile.TemporaryDirectory() as tmpdirname:
     tmp_path = os.path.join(tmpdirname, 'dag.png')
@@ -27,16 +34,16 @@ with tempfile.TemporaryDirectory() as tmpdirname:
 image
 """
 
+M: ndarray = rx.graph_adjacency_matrix(G, None)
+AdjList: defaultdict = convert(M)
 
-M=rx.graph_adjacency_matrix(G,None)
-AdjList = convert(M)
+s: str = ""
+a: EdgeList = G.edge_list()
+for i in a:
+    s += str(i) + ' '
 
-print(AdjList)
-
-a=G.edge_list()
-
-H=rx.PyGraph()
-H.read_edge_list(a)
+H: rx.PyGraph = rx.PyGraph()
+H.read_edge_list(s)
 
 """
 dot = pydot.graph_from_dot_data(H.to_dot())[0]
@@ -48,4 +55,3 @@ with tempfile.TemporaryDirectory() as tmpdirname:
     os.remove(tmp_path)
 image
 """
-
